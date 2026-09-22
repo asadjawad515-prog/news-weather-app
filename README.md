@@ -1,16 +1,101 @@
-# React + Vite
+# 📰 News Dashboard + Weather App
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A React.js web application that displays the latest news and current weather information in one place.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+* 📰 Fetch and display news from News API
+* 🔎 Search news by keyword
+* 📂 Filter news by category
+* 🌤️ Search weather by city
+* 🌡️ Display temperature and weather condition
+* 💧 Show humidity and wind speed
+* ⭐ Add and remove favorite news
+* 🔄 Save recent searches
+* 💾 Store favorites and recent searches using localStorage
+* ⏳ Loading states
+* ❌ Error handling
+* 📱 Responsive design for desktop and mobile
 
-## React Compiler
+## 🛠️ Technologies Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* React.js
+* JavaScript
+* HTML
+* CSS
+* Vite
+* News API
+* OpenWeather API
+* localStorage
 
-## Expanding the Oxlint configuration
+## 📚 React Concepts Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+This project helped me practice:
+
+* `useState`
+* `useEffect`
+* Props
+* Components
+* API calls with `fetch()`
+* `async/await`
+* `.map()`
+* `.filter()`
+* Conditional rendering
+* Local storage
+
+## 📁 Main Components
+
+* `App.jsx` — Main application logic and news functionality
+* `NewsCard.jsx` — Reusable news card component
+* `Weather.jsx` — Weather search and weather information
+* `App.css` — Main application styling
+* `index.css` — Global styling
+
+## ▶️ Run the Project Locally
+
+Clone the repository:
+
+```bash
+git clone https://github.com/asadjawad515-prog/news-weather-app.git
+```
+
+Go into the project folder:
+
+```bash
+cd news-weather-app
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+## 🔐 Environment Variables
+
+This project uses API keys for News API and OpenWeather API.
+
+Create a `.env` file in the project root and add:
+
+```env
+VITE_NEWS_API_KEY=your_news_api_key
+VITE_WEATHER_API_KEY=your_weather_api_key
+```
+
+Do not upload your real API keys to GitHub.
+
+## 🎯 Project Purpose
+
+This project was created to practice React.js fundamentals, API integration, reusable components, state management, and responsive UI development.
+
+## 👨‍💻 Author
+
+**Asad Jawad**
+
+GitHub: https://github.com/asadjawad515-prog
