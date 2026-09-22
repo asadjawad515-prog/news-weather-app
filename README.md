@@ -1,4 +1,7 @@
 # 📰 News Dashboard + Weather App
+## 🌐 Live Demo
+
+[Open Live Website](https://news-weather-app-three.vercel.app)
 
 A React.js web application that displays the latest news and current weather information in one place.
 
