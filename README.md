@@ -5,6 +5,14 @@
 
 A React.js web application that displays the latest news and current weather information in one place.
 
+## Screenshots;
+
+### News Dashboard
+<img width="917" height="226" alt="image" src="https://github.com/user-attachments/assets/a302ec28-107b-4f55-b75d-99638780df17" />
+
+### Weather App
+<img width="857" height="304" alt="image" src="https://github.com/user-attachments/assets/6be31ec1-24be-413f-a169-a4182a1d1995" />
+
 ## 🚀 Features
 
 * 📰 Fetch and display news from News API
