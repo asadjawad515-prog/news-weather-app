@@ -89,7 +89,7 @@ function App() {
   })
   return (
     <div className="app">
-      <h1>News Web</h1>
+      <h1>News Dashboard + Weather App</h1>
       <p>Latest news and weather information</p>
 
       <section className="news-section">
