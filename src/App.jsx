@@ -9,39 +9,79 @@ function App() {
   const [articles, setArticles] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [favorites, setFavorites] = useState(() => {
+  
+const [favorites, setFavorites] = useState(() => {
+  try {
     const savedFavorites = localStorage.getItem('favorites')
     return savedFavorites ? JSON.parse(savedFavorites) : []
-  })
+  } catch {
+    return []
+  }
+})
 
-  const [recentSearches, setRecentSearches] = useState(() => {
+const [recentSearches, setRecentSearches] = useState(() => {
+  try {
     const savedSearches = localStorage.getItem('recentSearches')
     return savedSearches ? JSON.parse(savedSearches) : []
-  })
-  useEffect(() => {
-    setLoading(true)
-    setError('')
+  } catch {
+    return []
+  }
+})
 
-    fetch(
-      `https://newsapi.org/v2/top-headlines?country=us&category=${category === 'All' ? 'general' : category.toLowerCase()}&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
-    )
-      .then((response) => {
+
+  
+  useEffect(() => {
+    const controller = new AbortController()
+
+    const fetchNews = async () => {
+      setLoading(true)
+      setError('')
+
+      const query =
+        category === 'All'
+          ? ''
+          : `&q=${encodeURIComponent(category.toLowerCase())}`
+
+      try {
+        const response = await fetch(
+          `https://freenewsapi.ai/v1/search?lang=en&size=20&sort=date${query}`,
+          { signal: controller.signal }
+        )
+
         if (!response.ok) {
           throw new Error('News API request failed')
         }
 
-        return response.json()
-      })
-      .then((data) => {
-        setArticles(data.articles || [])
-        setLoading(false)
-      })
-      .catch((error) => {
-        console.log(error)
-        setError('News load nahi ho saki.')
-        setLoading(false)
-      })
+        const data = await response.json()
+
+        setArticles(Array.isArray(data.results) ? data.results : [])
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          return
+        }
+
+        console.error(error)
+        setArticles([])
+        setError(
+          'Unable to load the latest news right now. Please try again in a moment.'
+        )
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false)
+        }
+      }
+    }
+
+    fetchNews()
+
+    return () => {
+      controller.abort()
+    }
   }, [category])
+
+ 
+ 
+
   useEffect(() => {
     localStorage.setItem('favorites', JSON.stringify(favorites))
   }, [favorites])
@@ -80,13 +120,25 @@ function App() {
       return updatedSearches.slice(0, 5)
     })
   }
-  const filteredArticles = articles.filter((article) => {
-    const matchesSearch = article.title
-      ?.toLowerCase()
-      .includes(search.toLowerCase())
+  
+const uniqueArticles = articles.filter((article, index, self) => {
+  const title = article.title?.trim().toLowerCase()
 
-    return matchesSearch
-  })
+  if (!title) return false
+
+  return self.findIndex(
+    (item) => item.title?.trim().toLowerCase() === title
+  ) === index
+})
+
+const filteredArticles = uniqueArticles.filter((article) => {
+  const matchesSearch = article.title
+    ?.toLowerCase()
+    .includes(search.toLowerCase())
+
+  return matchesSearch
+})
+
   return (
     <div className="app">
       <h1>News Dashboard + Weather App</h1>
@@ -94,8 +146,7 @@ function App() {
 
       <section className="news-section">
         <h2>Live News</h2>
-        <p>News articles will appear here.</p>
-
+        
         <select
           value={category}
           onChange={(event) => setCategory(event.target.value)}
@@ -115,7 +166,7 @@ function App() {
             }
           }}
         />
-        {loading && <p>Loading news...</p>}
+        {loading && <p>Loading the latest news... Please wait.</p>}
 
         {error && <p>{error}</p>}
         {filteredArticles.length === 0 && !loading && !error ? (
@@ -129,8 +180,8 @@ function App() {
                 key={article.url}
                 title={article.title}
                 description={article.description}
-                date={article.publishedAt}
-                image={article.urlToImage}
+                date={article.published_at}
+                image={article.image}
                 onFavorite={() => addToFavorites(article)}
                 isFavorite={favorites.some(
                   (favorite) => favorite.url === article.url
@@ -166,8 +217,8 @@ function App() {
                 key={article.url}
                 title={article.title}
                 description={article.description}
-                date={article.publishedAt}
-                image={article.urlToImage}
+                date={article.published_at}
+                image={article.image}
                 onFavorite={() => addToFavorites(article)}
                 isFavorite={true}
               />
